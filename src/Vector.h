@@ -14,13 +14,18 @@ template <unsigned int TSize, typename T>
 struct Vector : public Vector_Union<TSize, T>
 {
 public:
+	using type = T;
+	using TFloat = typename std::conditional<(sizeof(T) <= 4), float, double>::type;
+	static constexpr unsigned int Size() { return TSize; }
+
+public:
 	Vector() {}
 	Vector(std::initializer_list<T> data) { memcpy(&this->value, data.begin(), data.size() * sizeof(T)); }
 
 public:
-	double Magnitude()
+	TFloat Magnitude()
 	{
-		double sum = 0;
+		TFloat sum = 0;
 		for (int i = 0; i < TSize; i++)
 		{
 			sum += this->value[i] * this->value[i];
