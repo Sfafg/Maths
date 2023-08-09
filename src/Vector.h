@@ -1,5 +1,4 @@
 #pragma once
-#include <type_traits>
 
 namespace
 {
@@ -8,6 +7,10 @@ namespace
 	template <typename T> struct Vector_Union<2, T> { union { T value[2]; struct { T x, y; }; }; };
 	template <typename T> struct Vector_Union<3, T> { union { T value[3]; struct { T x, y, z; }; }; };
 	template <typename T> struct Vector_Union<4, T> { union { T value[4]; struct { T x, y, z, w; }; }; };
+
+	template <bool isTrue>struct FloatingTypeCondition {};
+	template <>struct FloatingTypeCondition<true> { typedef float type; };
+	template <>struct FloatingTypeCondition<false> { typedef double type; };
 }
 
 template <unsigned int TSize, typename T>
@@ -15,7 +18,7 @@ struct Vector : public Vector_Union<TSize, T>
 {
 public:
 	using type = T;
-	using TFloat = typename std::conditional<(sizeof(T) <= 4), float, double>::type;
+	using TFloat = typename FloatingTypeCondition<sizeof(T) <= 4>::type;
 	static constexpr unsigned int Size() { return TSize; }
 
 public:
