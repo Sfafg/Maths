@@ -3,6 +3,7 @@
 #include <Maths.h>
 int main()
 {
-    std::cout << Maths::Degrees(Maths::Asin(1));
+    std::cout << Maths::Vector2d(1.0, 2.0f);
+
     return 0;
 }
