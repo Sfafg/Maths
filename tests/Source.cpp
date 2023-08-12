@@ -3,7 +3,7 @@
 #include <Maths.h>
 int main()
 {
-    std::cout << Maths::Vector2d(1.0, 2.0f);
+    std::cout << Maths::vec2i(1, 2) * Maths::vec2f(0.5f, 0.5f);
 
-    return 0;
+    return -1;
 }
