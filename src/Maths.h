@@ -4,6 +4,7 @@ namespace Maths
 	extern const float PI;
 	extern const int MAX_RAND;
 
+	extern long double Degrees(long double radians);
 	extern double Degrees(double radians);
 	extern float Degrees(float radians);
 	extern double Degrees(long long radians);
@@ -15,6 +16,7 @@ namespace Maths
 	extern float Degrees(unsigned short radians);
 	extern float Degrees(unsigned char radians);
 
+	extern long double Radians(long double degrees);
 	extern double Radians(double degrees);
 	extern float Radians(float degrees);
 	extern double Radians(long long degrees);
@@ -26,6 +28,7 @@ namespace Maths
 	extern float Radians(unsigned short degrees);
 	extern float Radians(unsigned char degrees);
 
+	extern long double Mod(long double a, long double b);
 	extern double Mod(double a, double b);
 	extern float Mod(float a, float b);
 	extern long long Mod(long long a, long long b);
@@ -37,6 +40,7 @@ namespace Maths
 	extern unsigned short Mod(unsigned short a, unsigned short b);
 	extern unsigned char Mod(unsigned char a, unsigned char b);
 
+	extern long double Abs(long double a);
 	extern double Abs(double a);
 	extern float Abs(float a);
 	extern long long Abs(long long a);
@@ -45,6 +49,7 @@ namespace Maths
 	extern short Abs(short a);
 	extern char Abs(char a);
 
+	extern int Sign(long double a);
 	extern int Sign(double a);
 	extern int Sign(float a);
 	extern int Sign(long long a);
@@ -56,6 +61,7 @@ namespace Maths
 	extern int Sign(unsigned short a);
 	extern int Sign(unsigned char a);
 
+	extern long double Min(long double a, long double b);
 	extern double Min(double a, double b);
 	extern float Min(float a, float b);
 	extern long long Min(long long a, long long b);
@@ -67,6 +73,7 @@ namespace Maths
 	extern unsigned short Min(unsigned short a, unsigned short b);
 	extern unsigned char Min(unsigned char a, unsigned char b);
 
+	extern long double Max(long double a, long double b);
 	extern double Max(double a, double b);
 	extern float Max(float a, float b);
 	extern long long Max(long long a, long long b);
@@ -78,6 +85,7 @@ namespace Maths
 	extern unsigned short Max(unsigned short a, unsigned short b);
 	extern unsigned char Max(unsigned char a, unsigned char b);
 
+	extern long double Clamp(long double x, long double min, long double max);
 	extern double Clamp(double x, double min, double max);
 	extern float Clamp(float x, float min, float max);
 	extern long long Clamp(long long x, long long min, long long max);
@@ -89,6 +97,7 @@ namespace Maths
 	extern unsigned short Clamp(unsigned short x, unsigned short min, unsigned short max);
 	extern unsigned char Clamp(unsigned char x, unsigned char min, unsigned char max);
 
+	extern long double Wrap(long double x, long double min, long double max);
 	extern double Wrap(double x, double min, double max);
 	extern float Wrap(float x, float min, float max);
 	extern long long Wrap(long long x, long long min, long long max);
@@ -100,6 +109,7 @@ namespace Maths
 	extern unsigned short Wrap(unsigned short x, unsigned short min, unsigned short max);
 	extern unsigned char Wrap(unsigned char x, unsigned char min, unsigned char max);
 
+	extern long double Lerp(long double a, long double b, long double k);
 	extern double Lerp(double a, double b, double k);
 	extern float Lerp(float a, float b, float k);
 	extern long long Lerp(long long a, long long b, double k);
@@ -111,6 +121,7 @@ namespace Maths
 	extern unsigned short Lerp(unsigned short a, unsigned short b, float k);
 	extern unsigned char Lerp(unsigned char a, unsigned char b, float k);
 
+	extern long double Ceil(long double a);
 	extern double Ceil(double a);
 	extern float Ceil(float a);
 	extern double Round(double a);
@@ -118,6 +129,7 @@ namespace Maths
 	extern double Floor(double a);
 	extern float Floor(float a);
 
+	extern long double Pow(long double a, long double b);
 	extern double Pow(double a, double b);
 	extern float Pow(float a, float b);
 	extern double Pow(long long a, double b);
@@ -129,6 +141,7 @@ namespace Maths
 	extern float Pow(unsigned short a, float b);
 	extern float Pow(unsigned char a, float b);
 
+	extern long double Sqrt(long double a);
 	extern double Sqrt(double a);
 	extern float Sqrt(float a);
 	extern double Sqrt(long long a);
@@ -149,6 +162,8 @@ namespace Maths
 
 	extern void Seed(unsigned int seed);
 	extern int Random();
+	extern long double Random(long double max);
+	extern long double Random(long double min, long double max);
 	extern double Random(double max);
 	extern double Random(double min, double max);
 	extern float Random(float max);
@@ -169,6 +184,7 @@ namespace Maths
 	extern unsigned short Random(unsigned short min, unsigned short max);
 	extern unsigned char Random(unsigned char max);
 	extern unsigned char Random(unsigned char min, unsigned char max);
+	extern long double NormalDist(long double mean, long double standardDeviation);
 	extern double NormalDist(double mean, double standardDeviation);
 	extern float NormalDist(float mean, float standardDeviation);
 }

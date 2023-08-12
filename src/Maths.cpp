@@ -8,6 +8,7 @@ namespace Maths
 	const float RAD_DEGREE = 180.0f / PI;
 	const int MAX_RAND = RAND_MAX;
 
+	long double Degrees(long double radians) { return radians * RAD_DEGREE; }
 	double Degrees(double radians) { return radians * RAD_DEGREE; }
 	float Degrees(float radians) { return radians * RAD_DEGREE; }
 	double Degrees(long long radians) { return radians * RAD_DEGREE; }
@@ -19,6 +20,7 @@ namespace Maths
 	float Degrees(unsigned short radians) { return radians * RAD_DEGREE; }
 	float Degrees(unsigned char radians) { return radians * RAD_DEGREE; }
 
+	long double Radians(long double degrees) { return degrees * DEGREE_RAD; }
 	double Radians(double degrees) { return degrees * DEGREE_RAD; }
 	float Radians(float degrees) { return degrees * DEGREE_RAD; }
 	double Radians(long long degrees) { return degrees * DEGREE_RAD; }
@@ -30,6 +32,7 @@ namespace Maths
 	float Radians(unsigned short degrees) { return degrees * DEGREE_RAD; }
 	float Radians(unsigned char degrees) { return degrees * DEGREE_RAD; }
 
+	long double Mod(long double a, long double b) { return fmod(a, b); }
 	double Mod(double a, double b) { return fmod(a, b); }
 	float Mod(float a, float b) { return fmod(a, b); }
 	long long Mod(long long a, long long b) { return a % b; }
@@ -41,6 +44,7 @@ namespace Maths
 	unsigned short Mod(unsigned short a, unsigned short b) { return a % b; }
 	unsigned char Mod(unsigned char a, unsigned char b) { return a % b; }
 
+	long double Abs(long double a) { return abs(a); }
 	double Abs(double a) { return abs(a); }
 	float Abs(float a) { return abs(a); }
 	long long Abs(long long a) { return abs(a); }
@@ -49,17 +53,19 @@ namespace Maths
 	short Abs(short a) { return abs(a); }
 	char Abs(char a) { return abs(a); }
 
-	int Sign(double a) { return signbit(a) ? 1 : (a == 0 ? 0 : -1); }
-	int Sign(float a) { return signbit(a) ? 1 : (a == 0 ? 0 : -1); }
-	int Sign(long long a) { return signbit(a) ? 1 : (a == 0 ? 0 : -1); }
-	int Sign(long a) { return signbit(a) ? 1 : (a == 0 ? 0 : -1); }
-	int Sign(int a) { return signbit(a) ? 1 : (a == 0 ? 0 : -1); }
-	int Sign(short a) { return signbit(a) ? 1 : (a == 0 ? 0 : -1); }
-	int Sign(char a) { return signbit(a) ? 1 : (a == 0 ? 0 : -1); }
-	int Sign(unsigned int a) { return signbit(a) ? 1 : (a == 0 ? 0 : -1); }
-	int Sign(unsigned short a) { return signbit(a) ? 1 : (a == 0 ? 0 : -1); }
-	int Sign(unsigned char a) { return signbit(a) ? 1 : (a == 0 ? 0 : -1); }
+	int Sign(long double a) { return (a < 0) ? -1 : (a > 0) ? 1 : 0; }
+	int Sign(double a) { return (a < 0) ? -1 : (a > 0) ? 1 : 0; }
+	int Sign(float a) { return (a < 0) ? -1 : (a > 0) ? 1 : 0; }
+	int Sign(long long a) { return (a < 0) ? -1 : (a > 0) ? 1 : 0; }
+	int Sign(long a) { return (a < 0) ? -1 : (a > 0) ? 1 : 0; }
+	int Sign(int a) { return (a < 0) ? -1 : (a > 0) ? 1 : 0; }
+	int Sign(short a) { return (a < 0) ? -1 : (a > 0) ? 1 : 0; }
+	int Sign(char a) { return (a < 0) ? -1 : (a > 0) ? 1 : 0; }
+	int Sign(unsigned int a) { return (a < 0) ? -1 : (a > 0) ? 1 : 0; }
+	int Sign(unsigned short a) { return (a < 0) ? -1 : (a > 0) ? 1 : 0; }
+	int Sign(unsigned char a) { return (a < 0) ? -1 : (a > 0) ? 1 : 0; }
 
+	long double Min(long double a, long double b) { return (a < b) ? a : b; }
 	double Min(double a, double b) { return (a < b) ? a : b; }
 	float Min(float a, float b) { return (a < b) ? a : b; }
 	long long Min(long long a, long long b) { return (a < b) ? a : b; }
@@ -71,6 +77,7 @@ namespace Maths
 	unsigned short Min(unsigned short a, unsigned short b) { return (a < b) ? a : b; }
 	unsigned char Min(unsigned char a, unsigned char b) { return (a < b) ? a : b; }
 
+	long double Max(long double a, long double b) { return (a > b) ? a : b; }
 	double Max(double a, double b) { return (a > b) ? a : b; }
 	float Max(float a, float b) { return (a > b) ? a : b; }
 	long long Max(long long a, long long b) { return (a > b) ? a : b; }
@@ -82,6 +89,7 @@ namespace Maths
 	unsigned short Max(unsigned short a, unsigned short b) { return (a > b) ? a : b; }
 	unsigned char Max(unsigned char a, unsigned char b) { return (a > b) ? a : b; }
 
+	long double Clamp(long double x, long double min, long double max) { return Min(Max(x, min), max); }
 	double Clamp(double x, double min, double max) { return Min(Max(x, min), max); }
 	float Clamp(float x, float min, float max) { return Min(Max(x, min), max); }
 	long long Clamp(long long x, long long min, long long max) { return Min(Max(x, min), max); }
@@ -93,6 +101,7 @@ namespace Maths
 	unsigned short Clamp(unsigned short x, unsigned short min, unsigned short max) { return Min(Max(x, min), max); }
 	unsigned char Clamp(unsigned char x, unsigned char min, unsigned char max) { return Min(Max(x, min), max); }
 
+	long double Wrap(long double x, long double min, long double max) { return Mod(x - min, max - min) + min; }
 	double Wrap(double x, double min, double max) { return Mod(x - min, max - min) + min; }
 	float Wrap(float x, float min, float max) { return Mod(x - min, max - min) + min; }
 	long long Wrap(long long x, long long min, long long max) { return Mod(x - min, max - min) + min; }
@@ -104,6 +113,7 @@ namespace Maths
 	unsigned short Wrap(unsigned short x, unsigned short min, unsigned short max) { return Mod(x - min, max - min) + min; }
 	unsigned char Wrap(unsigned char x, unsigned char min, unsigned char max) { return Mod(x - min, max - min) + min; }
 
+	long double Lerp(long double a, long double b, long double k) { return a * k + b * (1 - k); }
 	double Lerp(double a, double b, double k) { return a * k + b * (1 - k); }
 	float Lerp(float a, float b, float k) { return a * k + b * (1 - k); }
 	long long Lerp(long long a, long long b, double k) { return a * k + b * (1 - k); }
@@ -115,6 +125,7 @@ namespace Maths
 	unsigned short Lerp(unsigned short a, unsigned short b, float k) { return a * k + b * (1 - k); }
 	unsigned char Lerp(unsigned char a, unsigned char b, float k) { return a * k + b * (1 - k); }
 
+	long double Ceil(long double a) { return ceil(a); }
 	double Ceil(double a) { return ceil(a); }
 	float Ceil(float a) { return ceil(a); }
 	double Round(double a) { return round(a); }
@@ -122,6 +133,7 @@ namespace Maths
 	double Floor(double a) { return floor(a); }
 	float Floor(float a) { return floor(a); }
 
+	long double Pow(long double a, long double b) { return pow(a, b); }
 	double Pow(double a, double b) { return pow(a, b); }
 	float Pow(float a, float b) { return pow(a, b); }
 	double Pow(long long a, double b) { return pow(a, b); }
@@ -133,6 +145,7 @@ namespace Maths
 	float Pow(unsigned short a, float b) { return pow(a, b); }
 	float Pow(unsigned char a, float b) { return pow(a, b); }
 
+	long double Sqrt(long double a) { return sqrt(a); }
 	double Sqrt(double a) { return sqrt(a); }
 	float Sqrt(float a) { return sqrt(a); }
 	double Sqrt(long long a) { return sqrt(a); }
@@ -153,6 +166,8 @@ namespace Maths
 
 	void Seed(unsigned int seed) { srand(seed); }
 	int Random() { return rand(); }
+	long double Random(long double max) { return rand() / (double) MAX_RAND * max; }
+	long double Random(long double min, long double max) { return rand() / (double) MAX_RAND * (max - min) + min; }
 	double Random(double max) { return rand() / (double) MAX_RAND * max; }
 	double Random(double min, double max) { return rand() / (double) MAX_RAND * (max - min) + min; }
 	float Random(float max) { return rand() / (float) MAX_RAND * max; }
@@ -174,6 +189,13 @@ namespace Maths
 	unsigned char Random(unsigned char max) { return Random((float) max); }
 	unsigned char Random(unsigned char min, unsigned char max) { return Random((float) min, (float) max); }
 
+	long double NormalDist(long double mean, long double standardDeviation)
+	{
+		static std::default_random_engine generator;
+		std::normal_distribution<long double> distribution = std::normal_distribution<long double>(mean, standardDeviation);
+
+		return distribution(generator);
+	}
 	double NormalDist(double mean, double standardDeviation)
 	{
 		static std::default_random_engine generator;
