@@ -61,6 +61,10 @@ namespace Maths
 
 		T& operator [](unsigned int index);
 		const T& operator [] (unsigned int index) const;
+
+	private:
+		template<typename OT>
+		struct OperatorReturnType { using type = typename std::conditional<std::is_integral<T>::value&& std::is_floating_point<OT>::value, OT, T>::type; };
 	};
 	template <unsigned int TSize, typename T, typename TOther> auto operator+(const TOther& s, const vec<TSize, T>& v);
 	template <unsigned int TSize, typename T, typename TOther> auto operator-(const TOther& s, const vec<TSize, T>& v);
