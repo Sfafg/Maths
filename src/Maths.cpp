@@ -61,9 +61,9 @@ namespace Maths
 	int Sign(int a) { return (a < 0) ? -1 : (a > 0) ? 1 : 0; }
 	int Sign(short a) { return (a < 0) ? -1 : (a > 0) ? 1 : 0; }
 	int Sign(char a) { return (a < 0) ? -1 : (a > 0) ? 1 : 0; }
-	int Sign(unsigned int a) { return (a < 0) ? -1 : (a > 0) ? 1 : 0; }
-	int Sign(unsigned short a) { return (a < 0) ? -1 : (a > 0) ? 1 : 0; }
-	int Sign(unsigned char a) { return (a < 0) ? -1 : (a > 0) ? 1 : 0; }
+	int Sign(unsigned int a) { return (a > 0) ? 1 : 0; }
+	int Sign(unsigned short a) { return (a > 0) ? 1 : 0; }
+	int Sign(unsigned char a) { return (a > 0) ? 1 : 0; }
 
 	long double Min(long double a, long double b) { return (a < b) ? a : b; }
 	double Min(double a, double b) { return (a < b) ? a : b; }
@@ -101,17 +101,17 @@ namespace Maths
 	unsigned short Clamp(unsigned short x, unsigned short min, unsigned short max) { return Min(Max(x, min), max); }
 	unsigned char Clamp(unsigned char x, unsigned char min, unsigned char max) { return Min(Max(x, min), max); }
 
-	long double Wrap(long double x, long double min, long double max) { return Mod(x - min, max - min) + min; }
-	double Wrap(double x, double min, double max) { return Mod(x - min, max - min) + min; }
-	float Wrap(float x, float min, float max) { return Mod(x - min, max - min) + min; }
-	long long Wrap(long long x, long long min, long long max) { return Mod(x - min, max - min) + min; }
-	long Wrap(long x, long min, long max) { return Mod(x - min, max - min) + min; }
-	int Wrap(int x, int min, int max) { return Mod(x - min, max - min) + min; }
-	short Wrap(short x, short min, short max) { return Mod(x - min, max - min) + min; }
-	char Wrap(char x, char min, char max) { return Mod(x - min, max - min) + min; }
-	unsigned int Wrap(unsigned int x, unsigned int min, unsigned int max) { return Mod(x - min, max - min) + min; }
-	unsigned short Wrap(unsigned short x, unsigned short min, unsigned short max) { return Mod(x - min, max - min) + min; }
-	unsigned char Wrap(unsigned char x, unsigned char min, unsigned char max) { return Mod(x - min, max - min) + min; }
+	long double Wrap(long double x, long double min, long double max) { return x + 2 * min - Floor((x + min) / (max - min)) * (max - min); }
+	double Wrap(double x, double min, double max) { return x + 2 * min - Floor((x + min) / (max - min)) * (max - min); }
+	float Wrap(float x, float min, float max) { return x + 2 * min - Floor((x + min) / (max - min)) * (max - min); }
+	long long Wrap(long long x, long long min, long long max) { return x + 2 * min - Floor((x + min) / (long double) (max - min)) * (max - min); }
+	long Wrap(long x, long min, long max) { return x + 2 * min - Floor((x + min) / (double) (max - min)) * (max - min); }
+	int Wrap(int x, int min, int max) { return x + 2 * min - Floor((x + min) / (float) (max - min)) * (max - min); }
+	short Wrap(short x, short min, short max) { return x + 2 * min - Floor((x + min) / (float) (max - min)) * (max - min); }
+	char Wrap(char x, char min, char max) { return x + 2 * min - Floor((x + min) / (float) (max - min)) * (max - min); }
+	unsigned int Wrap(unsigned int x, unsigned int min, unsigned int max) { return x + 2 * min - Floor((x + min) / (float) (max - min)) * (max - min); }
+	unsigned short Wrap(unsigned short x, unsigned short min, unsigned short max) { return x + 2 * min - Floor((x + min) / (float) (max - min)) * (max - min); }
+	unsigned char Wrap(unsigned char x, unsigned char min, unsigned char max) { return x + 2 * min - Floor((x + min) / (float) (max - min)) * (max - min); }
 
 	long double Lerp(long double a, long double b, long double k) { return a * k + b * (1 - k); }
 	double Lerp(double a, double b, double k) { return a * k + b * (1 - k); }
@@ -128,8 +128,10 @@ namespace Maths
 	long double Ceil(long double a) { return ceil(a); }
 	double Ceil(double a) { return ceil(a); }
 	float Ceil(float a) { return ceil(a); }
+	long double Round(long double a) { return round(a); }
 	double Round(double a) { return round(a); }
 	float Round(float a) { return round(a); }
+	long double Floor(long double a) { return floor(a); }
 	double Floor(double a) { return floor(a); }
 	float Floor(float a) { return floor(a); }
 

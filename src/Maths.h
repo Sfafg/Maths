@@ -124,9 +124,11 @@ namespace Maths
 	extern long double Ceil(long double a);
 	extern double Ceil(double a);
 	extern float Ceil(float a);
+	extern long double Round(long double a);
 	extern double Round(double a);
 	extern float Round(float a);
-	extern double Floor(double a);
+	extern long double Floor(long double a);
+	extern  double Floor(double a);
 	extern float Floor(float a);
 
 	extern long double Pow(long double a, long double b);
