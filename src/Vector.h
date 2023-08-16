@@ -3,7 +3,6 @@
 #include <assert.h>
 #include "Type.h"
 #include "Maths.h"
-
 namespace Maths
 {
 #define TEMPLATE template <unsigned int TSize, typename T>
@@ -72,6 +71,7 @@ namespace Maths
 	template <unsigned int TSize, typename T, typename TOther> auto operator*(const TOther& s, const vec<TSize, T>& v);
 	template <unsigned int TSize, typename T, typename TOther> auto operator/(const TOther& s, const vec<TSize, T>& v);
 	TEMPLATE std::ostream& operator<<(std::ostream& os, const vec<TSize, T>& v);
+	TEMPLATE std::istream& operator>>(std::istream& is, vec<TSize, T>& v);
 
 	namespace Vector
 	{
@@ -145,7 +145,7 @@ namespace Maths
 	TEMPLATE TFloat<T> VEC::Magnitude() const
 	{
 		TFloat<T> sum = 0;
-		for (unsigned int i = 0; i < Size(); i++)sum += (*this)[i] * (*this)[i];
+		for (unsigned int i = 0; i < Size(); i++)sum += this->value[i] * this->value[i];
 		return sum;
 	}
 	TEMPLATE TFloat<T> VEC::Length() const
@@ -156,7 +156,7 @@ namespace Maths
 	{
 		TFloat<T> length = Length();
 		if (length == 0) return;
-		for (unsigned int i = 0; i < Size(); i++)(*this)[i] /= length;
+		for (unsigned int i = 0; i < Size(); i++)this->value[i] /= length;
 	}
 	TEMPLATE VEC VEC::Normalized() const
 	{
@@ -189,7 +189,7 @@ namespace Maths
 	TEMPLATE template <typename TOther> VEC::operator vec<TSize, TOther>() const
 	{
 		vec<TSize, TOther> t;
-		for (unsigned int i = 0; i < TSize; i++) t[i] = (*this)[i];
+		for (unsigned int i = 0; i < TSize; i++) t[i] = this->value[i];
 
 		return t;
 	}
@@ -199,73 +199,73 @@ namespace Maths
 		unsigned int i = 0;
 		if constexpr (TSize < OSize)
 		{
-			for (i; i < TSize; i++) t[i] = (*this)[i];
+			for (i; i < TSize; i++) t[i] = this->value[i];
 			for (i; i < OSize; i++) t[i] = 0;
 		}
 		else
 		{
-			for (i; i < OSize; i++) t[i] = (*this)[i];
+			for (i; i < OSize; i++) t[i] = this->value[i];
 		}
 		return t;
 	}
 
 	TEMPLATE vec<TSize, T>& VEC::operator =(const vec<TSize, T>& o)
 	{
-		for (unsigned int i = 0; i < Size(); i++)(*this)[i] = o[i];
+		for (unsigned int i = 0; i < Size(); i++)this->value[i] = o[i];
 		return *this;
 	}
 	TEMPLATE vec<TSize, T>& VEC::operator +=(const vec<TSize, T>& o)
 	{
-		for (unsigned int i = 0; i < Size(); i++)(*this)[i] += o[i];
+		for (unsigned int i = 0; i < Size(); i++)this->value[i] += o[i];
 		return *this;
 	}
 	TEMPLATE vec<TSize, T>& VEC::operator -=(const vec<TSize, T>& o)
 	{
 		for (unsigned int i = 0; i < Size(); i++)
-			(*this)[i] -= o[i];
+			this->value[i] -= o[i];
 		return *this;
 	}
 	TEMPLATE vec<TSize, T>& VEC::operator *=(const vec<TSize, T>& o)
 	{
 		for (unsigned int i = 0; i < Size(); i++)
-			(*this)[i] *= o[i];
+			this->value[i] *= o[i];
 		return *this;
 	}
 	TEMPLATE vec<TSize, T>& VEC::operator /=(const vec<TSize, T>& o)
 	{
 		for (unsigned int i = 0; i < Size(); i++)
-			(*this)[i] /= o[i];
+			this->value[i] /= o[i];
 		return *this;
 	}
 	TEMPLATE vec<TSize, T>& VEC::operator +=(const T& o)
 	{
 		for (unsigned int i = 0; i < Size(); i++)
-			(*this)[i] += o;
+			this->value[i] += o;
 		return *this;
 	}
 	TEMPLATE vec<TSize, T>& VEC::operator -=(const T& o)
 	{
 		for (unsigned int i = 0; i < Size(); i++)
-			(*this)[i] -= o;
+			this->value[i] -= o;
 		return *this;
 	}
 	TEMPLATE vec<TSize, T>& VEC::operator *=(const T& o)
 	{
 		for (unsigned int i = 0; i < Size(); i++)
-			(*this)[i] *= o;
+			this->value[i] *= o;
 		return *this;
 	}
 	TEMPLATE vec<TSize, T>& VEC::operator /=(const T& o)
 	{
 		for (unsigned int i = 0; i < Size(); i++)
-			(*this)[i] /= o;
+			this->value[i] /= o;
 		return *this;
 	}
 	TEMPLATE vec<TSize, T> VEC::operator -() const
 	{
 		vec<TSize, T> t = *this;
 		for (unsigned int i = 0; i < Size(); i++)
-			t[i] = -(*this)[i];
+			t[i] = -this->value[i];
 		return t;
 	}
 	TEMPLATE template<typename TOther> auto VEC::operator +(const vec<TSize, TOther>& o)const
@@ -319,42 +319,42 @@ namespace Maths
 	TEMPLATE template<typename TOther>bool VEC::operator ==(const vec<TSize, TOther>& o) const
 	{
 		for (unsigned int i = 0; i < Size(); i++)
-			if ((*this)[i] != o[i])
+			if (this->value[i] != o[i])
 				return false;
 		return true;
 	}
 	TEMPLATE template<typename TOther>bool VEC::operator !=(const vec<TSize, TOther>& o) const
 	{
 		for (unsigned int i = 0; i < Size(); i++)
-			if ((*this)[i] != o[i])
+			if (this->value[i] != o[i])
 				return true;
 		return false;
 	}
 	TEMPLATE template<typename TOther>bool VEC::operator <(const vec<TSize, TOther>& o) const
 	{
 		for (unsigned int i = 0; i < Size(); i++)
-			if ((*this)[i] >= o[i])
+			if (this->value[i] >= o[i])
 				return false;
 		return true;
 	}
 	TEMPLATE template<typename TOther>bool VEC::operator <=(const vec<TSize, TOther>& o) const
 	{
 		for (unsigned int i = 0; i < Size(); i++)
-			if ((*this)[i] > o[i])
+			if (this->value[i] > o[i])
 				return false;
 		return true;
 	}
 	TEMPLATE template<typename TOther>bool VEC::operator >(const vec<TSize, TOther>& o) const
 	{
 		for (unsigned int i = 0; i < Size(); i++)
-			if ((*this)[i] <= o[i])
+			if (this->value[i] <= o[i])
 				return false;
 		return true;
 	}
 	TEMPLATE template<typename TOther>bool VEC::operator >=(const vec<TSize, TOther>& o) const
 	{
 		for (unsigned int i = 0; i < Size(); i++)
-			if ((*this)[i] < o[i])
+			if (this->value[i] < o[i])
 				return false;
 		return true;
 	}
@@ -399,6 +399,16 @@ namespace Maths
 	}
 	TEMPLATE std::ostream& operator<<(std::ostream& os, const VEC& v)
 	{
+
+#ifdef COMPACT_IN_OUT
+		for (unsigned int i = 0; i < v.Size() - 1; i++)
+		{
+			if constexpr (std::is_same<T, char>::value || std::is_same<T, unsigned char>::value) os << (int) v[i] << ',';
+			else os << v[i] << ',';
+		}
+		if constexpr (std::is_same<T, char>::value || std::is_same<T, unsigned char>::value) os << (int) v[v.Size() - 1];
+		else os << v[v.Size() - 1];
+#else
 		os << "vec" << v.Size();
 		if constexpr (std::is_unsigned<T>::value) os << 'u' << typeid(typename std::make_signed<T>::type).name()[0];
 		else os << typeid(T).name()[0];
@@ -406,14 +416,38 @@ namespace Maths
 		os << '(';
 		for (unsigned int i = 0; i < v.Size() - 1; i++)
 		{
-			if constexpr (std::is_same<T, char>::value || std::is_same<T, unsigned char>::value) os << (int) v[i] << ",";
+			if constexpr (std::is_same<T, char>::value || std::is_same<T, unsigned char>::value) os << (int) v[i] << ", ";
 			else os << v[i] << ", ";
 		}
 		if constexpr (std::is_same<T, char>::value || std::is_same<T, unsigned char>::value) os << (int) v[v.Size() - 1];
 		else os << v[v.Size() - 1];
 		os << ')';
 
+#endif
 		return os;
+	}
+	TEMPLATE std::istream& operator>>(std::istream& is, VEC& v)
+	{
+#ifdef COMPACT_IN_OUT
+		for (unsigned int i = 0; i < v.Size(); i++)
+		{
+			is >> v[i];
+		}
+#else
+		while (true)
+		{
+			char c = is.get();
+			if (is.eof()) return is;
+			if (c == '(') break;
+		}
+		for (unsigned int i = 0; i < v.Size(); i++)
+		{
+			is >> v[i];
+			is.get();
+		}
+#endif
+
+		return is;
 	}
 
 	TEMPLATE TFloat<T> Vector::Distance(const VEC& a, const VEC& b)

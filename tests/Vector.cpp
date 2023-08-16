@@ -1,8 +1,6 @@
 #include <iostream>
 #include <Vector.h>
 #include <Maths.h>
-#include <chrono>
-
 using namespace Maths;
 
 int main()
@@ -102,17 +100,6 @@ int main()
         if (lastR1 == r) return  __LINE__;
         lastR1 = r;
     }
-
-    std::cout << "PERFORMANCE:\n";
-    auto start = std::chrono::high_resolution_clock::now();
-    vec2f a(0);
-    vec2f b(1);
-    for (int i = 0; i < 1'000'000'000; i++)
-    {
-        a += b;
-    }
-    auto end = std::chrono::high_resolution_clock::now();
-    std::cout << std::chrono::duration<double>(end - start).count() * 1000 << "ms.\n";
 
     return 0;
 }
