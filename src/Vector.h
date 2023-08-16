@@ -3,16 +3,18 @@
 #include <assert.h>
 #include "Type.h"
 #include "Maths.h"
+#define TEMPLATE template <unsigned int TSize, typename T>
+#define VEC vec<TSize,T>
 namespace Maths
 {
-#define TEMPLATE template <unsigned int TSize, typename T>
 
 	// Used to get the x,y,z,w component aliases.
-	TEMPLATE struct Vector_Components { T value[TSize]; };
+	TEMPLATE struct Vector_Components { T entries[TSize]; };
 	TEMPLATE struct vec : public Vector_Components<TSize, T>
 	{
 		vec();
 		explicit vec(T v);
+		vec(T const (&data)[TSize]);
 		vec(std::initializer_list<T> data);
 		template <typename... TOther>
 		vec(T v1, TOther... data);
@@ -21,7 +23,7 @@ namespace Maths
 		TFloat<T> Magnitude() const;
 		TFloat<T> Length() const;
 		void Normalize();
-		vec<TSize, T> Normalized() const;
+		VEC Normalized() const;
 		static constexpr unsigned int Size();
 		T* begin();
 		T* end();
@@ -34,16 +36,16 @@ namespace Maths
 		template <unsigned int OSize, typename TOther>
 		explicit operator vec<OSize, TOther>() const;
 
-		vec<TSize, T>& operator =(const vec<TSize, T>& o);
-		vec<TSize, T>& operator +=(const vec<TSize, T>& o);
-		vec<TSize, T>& operator -=(const vec<TSize, T>& o);
-		vec<TSize, T>& operator *=(const vec<TSize, T>& o);
-		vec<TSize, T>& operator /=(const vec<TSize, T>& o);
-		vec<TSize, T>& operator +=(const T& o);
-		vec<TSize, T>& operator -=(const T& o);
-		vec<TSize, T>& operator *=(const T& o);
-		vec<TSize, T>& operator /=(const T& o);
-		vec<TSize, T> operator -() const;
+		VEC& operator =(const VEC& o);
+		VEC& operator +=(const VEC& o);
+		VEC& operator -=(const VEC& o);
+		VEC& operator *=(const VEC& o);
+		VEC& operator /=(const VEC& o);
+		VEC& operator +=(const T& o);
+		VEC& operator -=(const T& o);
+		VEC& operator *=(const T& o);
+		VEC& operator /=(const T& o);
+		VEC operator -() const;
 		template<typename TOther> auto operator+(const vec<TSize, TOther>& o) const;
 		template<typename TOther> auto operator-(const vec<TSize, TOther>& o) const;
 		template<typename TOther> auto operator*(const vec<TSize, TOther>& o) const;
@@ -66,39 +68,16 @@ namespace Maths
 		template<typename OT>
 		struct OperatorReturnType { using type = typename std::conditional<std::is_integral<T>::value&& std::is_floating_point<OT>::value, OT, T>::type; };
 	};
-	template <unsigned int TSize, typename T, typename TOther> auto operator+(const TOther& s, const vec<TSize, T>& v);
-	template <unsigned int TSize, typename T, typename TOther> auto operator-(const TOther& s, const vec<TSize, T>& v);
-	template <unsigned int TSize, typename T, typename TOther> auto operator*(const TOther& s, const vec<TSize, T>& v);
-	template <unsigned int TSize, typename T, typename TOther> auto operator/(const TOther& s, const vec<TSize, T>& v);
-	TEMPLATE std::ostream& operator<<(std::ostream& os, const vec<TSize, T>& v);
-	TEMPLATE std::istream& operator>>(std::istream& is, vec<TSize, T>& v);
+	template <unsigned int TSize, typename T, typename TOther> auto operator+(const TOther& s, const VEC& v);
+	template <unsigned int TSize, typename T, typename TOther> auto operator-(const TOther& s, const VEC& v);
+	template <unsigned int TSize, typename T, typename TOther> auto operator*(const TOther& s, const VEC& v);
+	template <unsigned int TSize, typename T, typename TOther> auto operator/(const TOther& s, const VEC& v);
+	TEMPLATE std::ostream& operator<<(std::ostream& os, const VEC& v);
+	TEMPLATE std::istream& operator>>(std::istream& is, VEC& v);
 
-	namespace Vector
-	{
-		TEMPLATE TFloat<T> Distance(const vec<TSize, T>& a, const vec<TSize, T>& b);
-		TEMPLATE TFloat<T> Length(const vec<TSize, T>& a);
-		TEMPLATE vec<TSize, T> Normalized(const vec<TSize, T>& a);
-		TEMPLATE vec<TSize, T> Round(const vec<TSize, T>& a);
-		TEMPLATE vec<TSize, T> Ceil(const vec<TSize, T>& a);
-		TEMPLATE vec<TSize, T> Floor(const vec<TSize, T>& a);
-		TEMPLATE vec<TSize, T> Abs(const vec<TSize, T>& a);
-		TEMPLATE vec<TSize, T> Sign(const vec<TSize, T>& a);
-		TEMPLATE vec<TSize, T> Clamp(const vec<TSize, T>& a, T min, T max);
-		TEMPLATE vec<TSize, T> Clamp(const vec<TSize, T>& a, const vec<TSize, T>& min, const vec<TSize, T>& max);
-		TEMPLATE vec<TSize, T> Clamp(const vec<TSize, T>& a, std::initializer_list<vec<2, T>> componentWiseBounds);
-		TEMPLATE vec<TSize, T> Wrap(const vec<TSize, T>& a, T min, T max);
-		TEMPLATE vec<TSize, T> Wrap(const vec<TSize, T>& a, const vec<TSize, T>& min, const vec<TSize, T>& max);
-		TEMPLATE vec<TSize, T> Wrap(const vec<TSize, T>& a, std::initializer_list<vec<2, T>> componentWiseBounds);
-		TEMPLATE vec<TSize, T> Lerp(const vec<TSize, T>& a, const vec<TSize, T>& b, float k);
-		TEMPLATE TFloat<T> Dot(const vec<TSize, T>& a, const vec<TSize, T>& b);
-		template<typename T> vec<3, T> Cross(const vec<3, T>& a, const vec<3, T>& b);
-		TEMPLATE vec<TSize, T> Reflect(const vec<TSize, T>& a, const vec<TSize, T>& normal);
-		TEMPLATE TFloat<T> Angle(const vec<TSize, T>& a, const vec<TSize, T>& b);
-		TEMPLATE vec<TSize, T> Random(T min, T max);
-		TEMPLATE vec<TSize, T> Random(const vec<TSize, T>& min, const vec<TSize, T>& max);
-		TEMPLATE vec<TSize, T> Random(std::initializer_list<vec<2, T>> componentWiseBounds);
-		TEMPLATE vec<TSize, T> Unit();
-	}
+	typedef vec<2, float> vec2;
+	typedef vec<3, float> vec3;
+	typedef vec<4, float> vec4;
 	typedef vec<2, float> vec2f;
 	typedef vec<3, float> vec3f;
 	typedef vec<4, float> vec4f;
@@ -109,22 +88,48 @@ namespace Maths
 	typedef vec<3, int> vec3i;
 	typedef vec<4, int> vec4i;
 
-#pragma region // IMPLEMENTATION
-	template <typename T> struct Vector_Components<1, T> { union { T value[1]; struct { T x; }; }; };
-	template <typename T> struct Vector_Components<2, T> { union { T value[2]; struct { T x, y; }; }; };
-	template <typename T> struct Vector_Components<3, T> { union { T value[3]; struct { T x, y, z; }; }; };
-	template <typename T> struct Vector_Components<4, T> { union { T value[4]; struct { T x, y, z, w; }; }; };
-
-#define VEC vec<TSize, T>
-
-	TEMPLATE VEC::vec()
+	namespace Vector
 	{
-		for (unsigned int i = 0; i < TSize; i++) this->value[i] = 0;
+		TEMPLATE TFloat<T> Distance(const VEC& a, const VEC& b);
+		TEMPLATE TFloat<T> Length(const VEC& a);
+		TEMPLATE VEC Normalized(const VEC& a);
+		TEMPLATE VEC Round(const VEC& a);
+		TEMPLATE VEC Ceil(const VEC& a);
+		TEMPLATE VEC Floor(const VEC& a);
+		TEMPLATE VEC Abs(const VEC& a);
+		TEMPLATE VEC Sign(const VEC& a);
+		TEMPLATE VEC Clamp(const VEC& a, T min, T max);
+		TEMPLATE VEC Clamp(const VEC& a, const VEC& min, const VEC& max);
+		TEMPLATE VEC Clamp(const VEC& a, std::initializer_list<vec<2, T>> componentWiseBounds);
+		TEMPLATE VEC Wrap(const VEC& a, T min, T max);
+		TEMPLATE VEC Wrap(const VEC& a, const VEC& min, const VEC& max);
+		TEMPLATE VEC Wrap(const VEC& a, std::initializer_list<vec<2, T>> componentWiseBounds);
+		TEMPLATE VEC Lerp(const VEC& a, const VEC& b, float k);
+		TEMPLATE TFloat<T> Dot(const VEC& a, const VEC& b);
+		template<typename T> vec<3, T> Cross(const vec<3, T>& a, const vec<3, T>& b);
+		TEMPLATE VEC Reflect(const VEC& a, const VEC& normal);
+		TEMPLATE TFloat<T> Angle(const VEC& a, const VEC& b);
+		TEMPLATE VEC Random(T min, T max);
+		TEMPLATE VEC Random(const VEC& min, const VEC& max);
+		TEMPLATE VEC Random(std::initializer_list<vec<2, T>> componentWiseBounds);
+		TEMPLATE VEC Unit();
 	}
+
+#pragma region // IMPLEMENTATION
+	template <typename T> struct Vector_Components<1, T> { union { T entries[1]; struct { T x; }; }; };
+	template <typename T> struct Vector_Components<2, T> { union { T entries[2]; struct { T x, y; }; }; };
+	template <typename T> struct Vector_Components<3, T> { union { T entries[3]; struct { T x, y, z; }; }; };
+	template <typename T> struct Vector_Components<4, T> { union { T entries[4]; struct { T x, y, z, w; }; }; };
+
+	TEMPLATE VEC::vec() {}
 	TEMPLATE VEC::vec(T v)
 	{
 		for (unsigned int i = 0; i < TSize; i++)
-			this->value[i] = v;
+			this->entries[i] = v;
+	}
+	TEMPLATE VEC::vec(T const (&data)[TSize])
+	{
+		memcpy(begin(), &data[0], TSize * sizeof(T));
 	}
 	TEMPLATE VEC::vec(std::initializer_list<T> data)
 	{
@@ -137,15 +142,15 @@ namespace Maths
 		static_assert(argumentCount - 1 <= TSize, "Too many arguments in vector constructor!");
 		(*this)[0] = v1;
 		unsigned int j = 1;
-		for (auto i : std::initializer_list<std::common_type_t<TOther...>>{ data... }) (*this)[j++] = (T) i;
-		for (; j < TSize; j++) (*this)[j] = 0;
+		for (auto i : std::initializer_list<std::common_type_t<TOther...>>{ data... }) this->entries[j++] = (T) i;
+		for (; j < TSize; j++) this->entries[j] = 0;
 	}
 
 
 	TEMPLATE TFloat<T> VEC::Magnitude() const
 	{
 		TFloat<T> sum = 0;
-		for (unsigned int i = 0; i < Size(); i++)sum += this->value[i] * this->value[i];
+		for (unsigned int i = 0; i < Size(); i++)sum += this->entries[i] * this->entries[i];
 		return sum;
 	}
 	TEMPLATE TFloat<T> VEC::Length() const
@@ -156,7 +161,7 @@ namespace Maths
 	{
 		TFloat<T> length = Length();
 		if (length == 0) return;
-		for (unsigned int i = 0; i < Size(); i++)this->value[i] /= length;
+		for (unsigned int i = 0; i < Size(); i++)this->entries[i] /= length;
 	}
 	TEMPLATE VEC VEC::Normalized() const
 	{
@@ -170,26 +175,26 @@ namespace Maths
 	}
 	TEMPLATE T* VEC::begin()
 	{
-		return &this->value[0];
+		return &this->entries[0];
 	}
 	TEMPLATE T* VEC::end()
 	{
-		return &this->value[0] + Size();
+		return &this->entries[0] + Size();
 	}
 	TEMPLATE const T* VEC::begin() const
 	{
-		return &this->value[0];
+		return &this->entries[0];
 	}
 	TEMPLATE const T* VEC::end() const
 	{
-		return &this->value[0] + Size();
+		return &this->entries[0] + Size();
 	}
 
 
 	TEMPLATE template <typename TOther> VEC::operator vec<TSize, TOther>() const
 	{
 		vec<TSize, TOther> t;
-		for (unsigned int i = 0; i < TSize; i++) t[i] = this->value[i];
+		for (unsigned int i = 0; i < TSize; i++) t[i] = this->entries[i];
 
 		return t;
 	}
@@ -199,73 +204,73 @@ namespace Maths
 		unsigned int i = 0;
 		if constexpr (TSize < OSize)
 		{
-			for (i; i < TSize; i++) t[i] = this->value[i];
+			for (i; i < TSize; i++) t[i] = this->entries[i];
 			for (i; i < OSize; i++) t[i] = 0;
 		}
 		else
 		{
-			for (i; i < OSize; i++) t[i] = this->value[i];
+			for (i; i < OSize; i++) t[i] = this->entries[i];
 		}
 		return t;
 	}
 
-	TEMPLATE vec<TSize, T>& VEC::operator =(const vec<TSize, T>& o)
+	TEMPLATE VEC& VEC::operator =(const VEC& o)
 	{
-		for (unsigned int i = 0; i < Size(); i++)this->value[i] = o[i];
+		for (unsigned int i = 0; i < Size(); i++)this->entries[i] = o[i];
 		return *this;
 	}
-	TEMPLATE vec<TSize, T>& VEC::operator +=(const vec<TSize, T>& o)
+	TEMPLATE VEC& VEC::operator +=(const VEC& o)
 	{
-		for (unsigned int i = 0; i < Size(); i++)this->value[i] += o[i];
+		for (unsigned int i = 0; i < Size(); i++)this->entries[i] += o[i];
 		return *this;
 	}
-	TEMPLATE vec<TSize, T>& VEC::operator -=(const vec<TSize, T>& o)
+	TEMPLATE VEC& VEC::operator -=(const VEC& o)
 	{
 		for (unsigned int i = 0; i < Size(); i++)
-			this->value[i] -= o[i];
+			this->entries[i] -= o[i];
 		return *this;
 	}
-	TEMPLATE vec<TSize, T>& VEC::operator *=(const vec<TSize, T>& o)
+	TEMPLATE VEC& VEC::operator *=(const VEC& o)
 	{
 		for (unsigned int i = 0; i < Size(); i++)
-			this->value[i] *= o[i];
+			this->entries[i] *= o[i];
 		return *this;
 	}
-	TEMPLATE vec<TSize, T>& VEC::operator /=(const vec<TSize, T>& o)
+	TEMPLATE VEC& VEC::operator /=(const VEC& o)
 	{
 		for (unsigned int i = 0; i < Size(); i++)
-			this->value[i] /= o[i];
+			this->entries[i] /= o[i];
 		return *this;
 	}
-	TEMPLATE vec<TSize, T>& VEC::operator +=(const T& o)
+	TEMPLATE VEC& VEC::operator +=(const T& o)
 	{
 		for (unsigned int i = 0; i < Size(); i++)
-			this->value[i] += o;
+			this->entries[i] += o;
 		return *this;
 	}
-	TEMPLATE vec<TSize, T>& VEC::operator -=(const T& o)
+	TEMPLATE VEC& VEC::operator -=(const T& o)
 	{
 		for (unsigned int i = 0; i < Size(); i++)
-			this->value[i] -= o;
+			this->entries[i] -= o;
 		return *this;
 	}
-	TEMPLATE vec<TSize, T>& VEC::operator *=(const T& o)
+	TEMPLATE VEC& VEC::operator *=(const T& o)
 	{
 		for (unsigned int i = 0; i < Size(); i++)
-			this->value[i] *= o;
+			this->entries[i] *= o;
 		return *this;
 	}
-	TEMPLATE vec<TSize, T>& VEC::operator /=(const T& o)
+	TEMPLATE VEC& VEC::operator /=(const T& o)
 	{
 		for (unsigned int i = 0; i < Size(); i++)
-			this->value[i] /= o;
+			this->entries[i] /= o;
 		return *this;
 	}
-	TEMPLATE vec<TSize, T> VEC::operator -() const
+	TEMPLATE VEC VEC::operator -() const
 	{
-		vec<TSize, T> t = *this;
+		VEC t = *this;
 		for (unsigned int i = 0; i < Size(); i++)
-			t[i] = -this->value[i];
+			t[i] = -this->entries[i];
 		return t;
 	}
 	TEMPLATE template<typename TOther> auto VEC::operator +(const vec<TSize, TOther>& o)const
@@ -319,78 +324,78 @@ namespace Maths
 	TEMPLATE template<typename TOther>bool VEC::operator ==(const vec<TSize, TOther>& o) const
 	{
 		for (unsigned int i = 0; i < Size(); i++)
-			if (this->value[i] != o[i])
+			if (this->entries[i] != o[i])
 				return false;
 		return true;
 	}
 	TEMPLATE template<typename TOther>bool VEC::operator !=(const vec<TSize, TOther>& o) const
 	{
 		for (unsigned int i = 0; i < Size(); i++)
-			if (this->value[i] != o[i])
+			if (this->entries[i] != o[i])
 				return true;
 		return false;
 	}
 	TEMPLATE template<typename TOther>bool VEC::operator <(const vec<TSize, TOther>& o) const
 	{
 		for (unsigned int i = 0; i < Size(); i++)
-			if (this->value[i] >= o[i])
+			if (this->entries[i] >= o[i])
 				return false;
 		return true;
 	}
 	TEMPLATE template<typename TOther>bool VEC::operator <=(const vec<TSize, TOther>& o) const
 	{
 		for (unsigned int i = 0; i < Size(); i++)
-			if (this->value[i] > o[i])
+			if (this->entries[i] > o[i])
 				return false;
 		return true;
 	}
 	TEMPLATE template<typename TOther>bool VEC::operator >(const vec<TSize, TOther>& o) const
 	{
 		for (unsigned int i = 0; i < Size(); i++)
-			if (this->value[i] <= o[i])
+			if (this->entries[i] <= o[i])
 				return false;
 		return true;
 	}
 	TEMPLATE template<typename TOther>bool VEC::operator >=(const vec<TSize, TOther>& o) const
 	{
 		for (unsigned int i = 0; i < Size(); i++)
-			if (this->value[i] < o[i])
+			if (this->entries[i] < o[i])
 				return false;
 		return true;
 	}
 
 	TEMPLATE T& VEC::operator [](unsigned int index)
 	{
-		return this->value[index];
+		return this->entries[index];
 	}
 	TEMPLATE const T& VEC::operator [](unsigned int index) const
 	{
-		return this->value[index];
+		return this->entries[index];
 	}
 
 
-	template <unsigned int TSize, typename T, typename TOther> auto operator+(const TOther& s, const vec<TSize, T>& v)
+	template <unsigned int TSize, typename T, typename TOther> auto operator+(const TOther& s, const VEC& v)
 	{
 		vec<TSize, TOp<T, TOther>> t = v;
 		for (unsigned int i = 0; i < TSize; i++)
 			t[i] = s + t[i];
 		return t;
 	}
-	template <unsigned int TSize, typename T, typename TOther> auto operator-(const TOther& s, const vec<TSize, T>& v)
+	template <unsigned int TSize, typename T, typename TOther> auto operator-(const TOther& s, const VEC& v)
 	{
 		vec<TSize, TOp<T, TOther>> t = v;
 		for (unsigned int i = 0; i < TSize; i++)
 			t[i] = s - t[i];
 		return t;
 	}
-	template <unsigned int TSize, typename T, typename TOther> auto operator*(const TOther& s, const vec<TSize, T>& v)
+	template <unsigned int TSize, typename T, typename TOther> auto operator*(const TOther& s, const VEC& v)
 	{
 		vec<TSize, TOp<T, TOther>> t = v;
 		for (unsigned int i = 0; i < TSize; i++)
 			t[i] = s * t[i];
 		return t;
 	}
-	template <unsigned int TSize, typename T, typename TOther> auto operator/(const TOther& s, const vec<TSize, T>& v)
+	template <unsigned int TSize, typename T, typename TOther> auto operator/(const TOther& s, const VEC& v)
 	{
 		vec<TSize, TOp<T, TOther>> t = v;
 		for (unsigned int i = 0; i < TSize; i++)
@@ -527,7 +532,7 @@ namespace Maths
 		}
 		return t;
 	}
-	TEMPLATE VEC Vector::Clamp(const vec<TSize, T>& a, std::initializer_list<vec<2, T>> componentWiseBounds)
+	TEMPLATE VEC Vector::Clamp(const VEC& a, std::initializer_list<vec<2, T>> componentWiseBounds)
 	{
 		assert(componentWiseBounds.size() == TSize);
 		auto t = a;
@@ -555,7 +560,7 @@ namespace Maths
 		}
 		return t;
 	}
-	TEMPLATE VEC Vector::Wrap(const vec<TSize, T>& a, std::initializer_list<vec<2, T>> componentWiseBounds)
+	TEMPLATE VEC Vector::Wrap(const VEC& a, std::initializer_list<vec<2, T>> componentWiseBounds)
 	{
 		assert(componentWiseBounds.size() == TSize);
 		auto t = a;
@@ -565,7 +570,7 @@ namespace Maths
 		}
 		return t;
 	}
-	TEMPLATE VEC Vector::Lerp(const VEC& a, const vec<TSize, T>& b, float k)
+	TEMPLATE VEC Vector::Lerp(const VEC& a, const VEC& b, float k)
 	{
 		return a * k + b * (1.0f - k);
 	}
@@ -642,9 +647,7 @@ namespace Maths
 		}
 	}
 
-#undef TEMPLATE
-#undef TOp
-#undef TFloat
-#undef VEC
 #pragma endregion // IMPLEMENTATION
 }
+#undef TEMPLATE
+#undef VEC

@@ -1,13 +1,10 @@
 #include <iostream>
 #include <Vector.h>
 #include <Maths.h>
-using namespace Maths;
 
+using namespace Maths;
 int main()
 {
-    if (vec<5, float>() != vec<5, float>({ 0,0,0,0,0 })) return __LINE__;
-    if (vec<5, float>(0, 0, 0, 0, 0) != vec<5, float>()) return __LINE__;
-
     if (sizeof(vec2f(1, 1).Magnitude()) != sizeof(float)) return __LINE__;
     if (sizeof(vec<2, long long int>(1, 1).Magnitude()) != sizeof(double)) return __LINE__;
     if (vec2f(1, 2).Magnitude() != 5) return __LINE__;
